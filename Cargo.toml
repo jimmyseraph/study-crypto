@@ -6,10 +6,16 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-sha2 = "0.10.6"
+sha2 = { version = "0.10.6", default-features = false, features = ["oid"] }
 hmac = "0.12.1"
 hex = "0.4.3"
+rsa = "0.7.2"
+rand = "0.8.5"
 
 [[example]]
 name = "study_hmac"
 path = "examples/study_hmac.rs"
+
+[[example]]
+name = "study_rs"
+path = "examples/study_rs.rs"
