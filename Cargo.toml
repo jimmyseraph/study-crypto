@@ -7,6 +7,7 @@ edition = "2021"
 
 [dependencies]
 sha2 = { version = "0.10.6", default-features = false, features = ["oid"] }
+base64 = "0.21.0"
 hmac = "0.12.1"
 hex = "0.4.3"
 rsa = "0.7.2"
@@ -14,6 +15,9 @@ rand = "0.8.5"
 ecdsa = "0.14.8"
 p256 = { version = "0.11.1", default-features = false, features = ["ecdsa"] }
 p384 = { version = "0.11.2", default-features = false, features = ["ecdsa"] }
+jsonwebtoken = "8.2.0"
+serde = {version = "1.0.147", features = ["derive"] }
+chrono = "0.4.23"
 
 [[example]]
 name = "study_hmac"
@@ -26,3 +30,7 @@ path = "examples/study_rs.rs"
 [[example]]
 name = "study_ps"
 path = "examples/study_ps.rs"
+
+[[example]]
+name = "study_jwt"
+path = "examples/study_jwt.rs"

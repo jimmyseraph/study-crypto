@@ -2,8 +2,9 @@ use rsa::RsaPrivateKey;
 use rsa::pkcs1v15::{SigningKey, VerifyingKey};
 use rsa::signature::{RandomizedSigner, Signature, Verifier};
 use sha2::{Sha256, Sha384, Sha512};
-use hex;
+use base64::{Engine as _, engine::{self, general_purpose}, alphabet};
 
+const CUSTOM_ENGINE: engine::GeneralPurpose = engine::GeneralPurpose::new(&alphabet::URL_SAFE, general_purpose::NO_PAD);
 
 fn main() {
     // 准备一个线程安全的随机数生成器
@@ -21,7 +22,8 @@ fn main() {
     let signing_key: SigningKey<Sha256> = SigningKey::<Sha256>::new_with_prefix(private_key.clone());
     let verifying_key: VerifyingKey<Sha256> = (&signing_key).into();
     let signature = signing_key.sign_with_rng(&mut rng, data);
-    let signature_string = hex::encode(signature.as_bytes());
+    // base64编码
+    let signature_string = CUSTOM_ENGINE.encode(signature.as_bytes());
     println!("RS256 String is: {}", signature_string);
 
     // RS256签名验证
@@ -31,7 +33,8 @@ fn main() {
     let signing_key: SigningKey<Sha384> = SigningKey::<Sha384>::new_with_prefix(private_key.clone());
     let verifying_key: VerifyingKey<Sha384> = (&signing_key).into();
     let signature = signing_key.sign_with_rng(&mut rng, data);
-    let signature_string = hex::encode(signature.as_bytes());
+    // base64编码
+    let signature_string = CUSTOM_ENGINE.encode(signature.as_bytes());
     println!("RS384 String is: {}", signature_string);
 
     // RS384签名验证
@@ -41,7 +44,8 @@ fn main() {
     let signing_key: SigningKey<Sha512> = SigningKey::<Sha512>::new_with_prefix(private_key.clone());
     let verifying_key: VerifyingKey<Sha512> = (&signing_key).into();
     let signature = signing_key.sign_with_rng(&mut rng, data);
-    let signature_string = hex::encode(signature.as_bytes());
+    // base64编码
+    let signature_string = CUSTOM_ENGINE.encode(signature.as_bytes());
     println!("RS512 String is: {}", signature_string);
 
     // RS512签名验证

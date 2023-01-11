@@ -1,5 +1,8 @@
 use p256::ecdsa::{SigningKey as SigningKey256, signature::Signer as Signer256};
 use p384::ecdsa::SigningKey as SigningKey384;
+use base64::{Engine as _, engine::{self, general_purpose}, alphabet};
+
+const CUSTOM_ENGINE: engine::GeneralPurpose = engine::GeneralPurpose::new(&alphabet::URL_SAFE, general_purpose::NO_PAD);
 
 fn main()  {
     // ES256签名
@@ -11,7 +14,10 @@ fn main()  {
     let message = b"Hello World";
     // 生成签名
     let signature = signing_key.sign(message);
-    println!("ES256 string: {}", signature);
+
+    // base64编码
+    let es256_string = CUSTOM_ENGINE.encode(signature.as_ref());
+    println!("ES256 string: {}", es256_string);
 
     // 用一个代码块来写验证的代码，这样可以避免变量名冲突
     {
@@ -28,7 +34,9 @@ fn main()  {
     let message = b"Hello World";
     // 生成签名
     let signature = signing_key.sign(message);
-    println!("ES384 string: {}", signature);
+    // base64编码
+    let es384_string = CUSTOM_ENGINE.encode(signature.as_ref());
+    println!("ES384 string: {}", es384_string);
     // 用一个代码块来写验证的代码，这样可以避免变量名冲突
     {
         use p384::ecdsa::{VerifyingKey, signature::Verifier};
